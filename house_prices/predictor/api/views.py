@@ -5,6 +5,7 @@ from rest_framework import status
 from knox.auth import TokenAuthentication
 
 from predictor.model_wrapper import model
+from predictor.api.serializers import PredictHousePriceSerializer
 
 
 class PredictHousePrice(APIView):
@@ -12,11 +13,15 @@ class PredictHousePrice(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        # validate data via serializer
-        data = ...
-        try:
-            price = model.predict(data)
-        except Exception as ex:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        data = request.data
+        serializer = PredictHousePriceSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
 
-        return Response(status=status.HTTP_200_OK, data=price)
+        try:
+            price = model.predict(serializer.validated_data)
+        except Exception as ex:
+            return Response(
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={"error": str(ex)}
+            )
+
+        return Response(status=status.HTTP_200_OK, data={"price": price})

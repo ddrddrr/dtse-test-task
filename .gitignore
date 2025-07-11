@@ -78,3 +78,6 @@ pip-selfcheck.json
 
 # MacOS
 .DS_Store
+
+# Test Task
+housing_prices_dashboard

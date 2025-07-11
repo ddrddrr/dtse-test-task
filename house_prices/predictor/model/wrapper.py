@@ -13,7 +13,7 @@ class ModelWrapper:
         features_path: str | Path = settings.FEATURES_PATH,
     ):
         self.model = load(Path(model_path))
-        with open(Path(features_path), "rb") as f:
+        with open(Path(features_path), "r") as f:
             self.features = json.load(f)
 
     def _prepare_input(self, data: dict) -> pd.DataFrame:

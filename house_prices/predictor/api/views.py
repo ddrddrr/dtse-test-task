@@ -1,17 +1,16 @@
+from knox.auth import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from knox.auth import TokenAuthentication
 
-from predictor.model_wrapper import model
+from predictor.model.wrapper import model
 from predictor.api.serializers import PredictHousePriceSerializer
 
 
 class PredictHousePrice(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-
     def post(self, request):
         data = request.data
         serializer = PredictHousePriceSerializer(data=data)

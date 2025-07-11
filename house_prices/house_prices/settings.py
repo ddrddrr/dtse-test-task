@@ -1,19 +1,23 @@
 import datetime
+from email.policy import default
 from pathlib import Path
 
-from decouple import AutoConfig
+from decouple import AutoConfig, Csv
 
 BASE_DIR = Path(__file__).resolve().parent.parent  # django project root dir
 ROOT_DIR = BASE_DIR.parent  # repo root dir
 
 config = AutoConfig(search_path=ROOT_DIR)  # looks for env in ROOT_DIR
 
-SECRET_KEY = "django-insecure-#o5sb0k$v42)-5yk%^4%d71on3!o6jttx4rr15^6^j!filvrao"
+DJANGO_BASE_URL = config("DJANGO_BASE_URL", default="http://localhost:8000")
 
-DEBUG = True
+SECRET_KEY = config("SECRET_KEY", default="<SECRET_KEY>")
 
-ALLOWED_HOSTS = []
+DEBUG = config("DEBUG", default=True, cast=bool)
 
+ALLOWED_HOSTS = config(
+    "DJANGO_ALLOWED_HOSTS", default="localhost,127.0.0.1", cast=Csv()
+)
 
 # Application definition
 
@@ -27,6 +31,9 @@ INSTALLED_APPS = [
     # 3rd party
     "rest_framework",
     "knox",
+    # Local
+    "users.apps.UsersConfig",
+    "predictor.apps.PredictorConfig",
 ]
 
 MIDDLEWARE = [
@@ -75,12 +82,19 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "knox.auth.TokenAuthentication",
     ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
 }
 
+
+TOKEN_TTL_HOURS = config(
+    "TOKEN_TTL_HOURS",
+    default="1",
+    cast=float,
+)
 REST_KNOX = {
-    "TOKEN_TTL": config(
-        "TOKEN_TTL", default=datetime.timedelta(hours=1), cast=datetime.timedelta
-    ),
+    "TOKEN_TTL": datetime.timedelta(hours=TOKEN_TTL_HOURS),
     "AUTO_REFRESH": False,
 }
 
@@ -101,6 +115,10 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+# Users
+
+AUTH_USER_MODEL = "users.BaseUser"
 
 
 # Internationalization
@@ -124,3 +142,11 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Model
+MODEL_PATH = config(
+    "MODEL_PATH", default="/Users/mazda/job_stuff/dtse-test-task/model/model.joblib"
+)
+FEATURES_PATH = config(
+    "FEATURES_PATH", default="/Users/mazda/job_stuff/dtse-test-task/model/features.json"
+)

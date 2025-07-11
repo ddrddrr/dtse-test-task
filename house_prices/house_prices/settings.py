@@ -4,6 +4,8 @@ from pathlib import Path
 
 from decouple import AutoConfig, Csv
 
+# Base Settings
+
 BASE_DIR = Path(__file__).resolve().parent.parent  # django project root dir
 ROOT_DIR = BASE_DIR.parent  # repo root dir
 
@@ -18,6 +20,7 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 ALLOWED_HOSTS = config(
     "DJANGO_ALLOWED_HOSTS", default="localhost,127.0.0.1", cast=Csv()
 )
+
 
 # Application definition
 
@@ -98,6 +101,7 @@ REST_KNOX = {
     "AUTO_REFRESH": False,
 }
 
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -143,10 +147,45 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Model
+
+# ML
+
 MODEL_PATH = config(
     "MODEL_PATH", default="/Users/mazda/job_stuff/dtse-test-task/model/model.joblib"
 )
 FEATURES_PATH = config(
     "FEATURES_PATH", default="/Users/mazda/job_stuff/dtse-test-task/model/features.json"
 )
+
+
+# Logging
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "simple": {"format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"},
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "house_prices": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+    },
+}

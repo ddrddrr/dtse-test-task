@@ -1,3 +1,5 @@
+import logging
+
 from knox.auth import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -7,20 +9,27 @@ from rest_framework import status
 from predictor.model.wrapper import model
 from predictor.api.serializers import PredictHousePriceSerializer
 
+logger = logging.getLogger(__name__)
+
 
 class PredictHousePrice(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+
     def post(self, request):
         data = request.data
-        serializer = PredictHousePriceSerializer(data=data)
-        serializer.is_valid(raise_exception=True)
+        ser = PredictHousePriceSerializer(data=data)
+        ser.is_valid(raise_exception=True)
 
         try:
-            price = model.predict(serializer.validated_data)
-        except Exception as ex:
+            price = model.predict(ser.validated_data)
+        except Exception:
+            logger.exception(
+                f"Could not make a prediction for data {ser.validated_data}",
+            )
             return Response(
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={"error": str(ex)}
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                data={"detail": "Unable to calculate the price."},
             )
 
         return Response(status=status.HTTP_200_OK, data={"price": price})

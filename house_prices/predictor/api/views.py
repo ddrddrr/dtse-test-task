@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+from predictor.api.docs import predict_price_schema
 from predictor.model.wrapper import model
 from predictor.api.serializers import PredictHousePriceSerializer
 
@@ -16,6 +17,7 @@ class PredictHousePrice(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+    @predict_price_schema
     def post(self, request):
         data = request.data
         ser = PredictHousePriceSerializer(data=data)

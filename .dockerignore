@@ -1,0 +1,27 @@
+# dotenv
+.env*
+
+# virtualenv
+.venv
+venv
+venv/
+ENV/
+
+# Docker/GIT
+.git
+.gitignore
+
+Dockerfile
+.dockerignore
+docker-compose*
+
+# Build
+Caddyfile*
+
+src/**/tests/
+src/**/tests/**
+
+__pycache__/
+# Misc
+LICENCE*
+README*

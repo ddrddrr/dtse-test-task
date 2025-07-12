@@ -1,0 +1,31 @@
+services:
+
+  server:
+    image:
+    env_file:
+      - .env
+    expose:
+      - "8000"
+    networks:
+      - main
+
+  proxy:
+    image: caddy:2.10-alpine
+    env_file:
+      - .env
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - main
+
+networks:
+  main:
+
+volumes:
+  caddy_data:
+  caddy_config:

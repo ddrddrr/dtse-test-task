@@ -1,5 +1,4 @@
 import datetime
-from email.policy import default
 from pathlib import Path
 
 from decouple import AutoConfig, Csv
@@ -34,6 +33,7 @@ INSTALLED_APPS = [
     # 3rd party
     "rest_framework",
     "knox",
+    "drf_spectacular",
     # Local
     "users.apps.UsersConfig",
     "predictor.apps.PredictorConfig",
@@ -88,6 +88,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 
@@ -99,6 +100,16 @@ TOKEN_TTL_HOURS = config(
 REST_KNOX = {
     "TOKEN_TTL": datetime.timedelta(hours=TOKEN_TTL_HOURS),
     "AUTO_REFRESH": False,
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "House Prices Predictor",
+    "DESCRIPTION": "An API designed to predict house prices",
+    "VERSION": "0.0.1",
+    "COMPONENT_SPLIT_REQUEST": True,
+    "SERVE_PUBLIC": False,
+    "SERVE_INCLUDE_SCHEMA": False,
+    "ENABLE_DJANGO_DEPLOY_CHECK": False,
 }
 
 
@@ -150,12 +161,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ML
 
-MODEL_PATH = config(
-    "MODEL_PATH", default="/Users/mazda/job_stuff/dtse-test-task/model/model.joblib"
-)
-FEATURES_PATH = config(
-    "FEATURES_PATH", default="/Users/mazda/job_stuff/dtse-test-task/model/features.json"
-)
+MODEL_PATH = config("MODEL_PATH")
+FEATURES_PATH = config("FEATURES_PATH")
 
 
 # Logging

@@ -6,6 +6,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from users.api.docs import login_schema, registration_schema
 from users.api.serializers import RegistrationSerializer, LoginSerializer
 
 
@@ -13,6 +14,7 @@ class LoginView(KnoxLoginView):
     authentication_classes = []  # no BasicAuth
     permission_classes = [AllowAny]
 
+    @login_schema
     def post(self, request, format=None):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -24,6 +26,7 @@ class LoginView(KnoxLoginView):
 class RegistrationView(APIView):
     permission_classes = [AllowAny]
 
+    @registration_schema
     def post(self, request):
         ser = RegistrationSerializer(data=request.data)
         ser.is_valid(raise_exception=True)

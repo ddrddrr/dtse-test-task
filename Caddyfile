@@ -1,0 +1,7 @@
+http://localhost:8000 {
+    handle /api/* {
+        reverse_proxy server:8000 {
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+}

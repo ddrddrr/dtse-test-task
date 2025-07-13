@@ -11,9 +11,11 @@ It loads a pre-trained model (`model.joblib`) and exposes a prediction endpoint 
    For example:
 
 ```sh
-DJANGO_SETTINGS_MODULE=house_prices.settings.base
-DEBUG=True
+export DJANGO_SETTINGS_MODULE=house_prices.settings.prod
+export DEBUG=False
 ```
+
+See the [P.S.](#ps) section for better env handling solution.
 
 # Running with Docker
 
@@ -21,7 +23,7 @@ DEBUG=True
    and the Caddy(proxy) image.
 2. By default the proxy is listening at `http://localhost`.
    The server is not accessible from the local machine, as it runs in an isolated Docker network.
-5. Try out the API(e.g., via Swagger, see #Try out the API).
+5. Try out the API(e.g., via Swagger, see [Try out the API section](#try-out-the-api)).
 
 # Running in development mode
 
@@ -32,7 +34,7 @@ DEBUG=True
    `uv run manage.py migrate && uv run manage.py runserver`.
    This will initialize the database and start the development server.
 5. By default the proxy is listening at `http://localhost:8000`.
-5. Try out the API(e.g., via Swagger, see #Try out the API).
+5. Try out the API(e.g., via Swagger, see [Try out the API section](#try-out-the-api)).
 
 # Try out the API
 
@@ -71,7 +73,7 @@ Try it out, either with the predefined value or your own.
 
 - `uv` is used as the project and dependency manager.
 - The service is built using **Django 5.2** and `django-rest-framework` package.
-- The python version used is `3.10`(see #Notes for explanation).
+- The python version used is `3.10`(see [Notes](#notes) for explanation).
 - SQLite is used as the database, as this is a small project and SQLite requires little to none setup.
 - Docker, Docker Compose and Caddy(proxy) are used for *Near-Production* setup.
 - The CI/CD pipeline is realised via GitHub Actions.

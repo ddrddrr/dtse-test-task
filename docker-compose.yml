@@ -2,8 +2,9 @@ services:
 
   server:
     image: ddrddrr2/house_prices:latest
-    env_file:
-      - .env
+    environment:
+      - DEBUG=${DEBUG}
+      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
     volumes:
       - django_static:/app/staticfiles
     expose:
@@ -13,8 +14,6 @@ services:
 
   proxy:
     image: caddy:2.10-alpine
-    env_file:
-      - .env
     restart: unless-stopped
     ports:
       - "80:80"

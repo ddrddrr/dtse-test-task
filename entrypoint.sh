@@ -9,4 +9,4 @@ uv run python manage.py check --deploy &&
 uv run python manage.py makemigrations &&
 uv run python manage.py migrate &&
 uv run python manage.py collectstatic --noinput &&
-gunicorn house_prices.wsgi
+gunicorn house_prices.wsgi:application --bind 0.0.0.0:8000

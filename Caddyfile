@@ -1,4 +1,4 @@
-http://localhost:8001 {
+http://localhost {
     handle_path /static/* {
         root /app/staticfiles
         file_server

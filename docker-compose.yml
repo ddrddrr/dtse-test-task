@@ -1,9 +1,11 @@
 services:
 
   server:
-    image:
+    image: ddrddrr2/house_prices:latest
     env_file:
       - .env
+    volumes:
+      - django_static:/app/staticfiles
     expose:
       - "8000"
     networks:
@@ -20,6 +22,7 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
+      - django_static:/app/staticfiles
     networks:
       - main
 
@@ -29,3 +32,4 @@ networks:
 volumes:
   caddy_data:
   caddy_config:
+  django_static:

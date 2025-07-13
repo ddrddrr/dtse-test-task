@@ -1,4 +1,8 @@
-http://localhost:8000 {
+http://localhost:8001 {
+    handle_path /static/* {
+        root /app/staticfiles
+        file_server
+    }
     handle /api/* {
         reverse_proxy server:8000 {
             header_up X-Forwarded-Proto {scheme}

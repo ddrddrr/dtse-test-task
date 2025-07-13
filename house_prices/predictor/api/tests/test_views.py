@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 from knox.models import AuthToken
@@ -9,7 +10,7 @@ class TestPredictHousePriceView(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.url = "/predictions/house-price/"
+        cls.url = reverse("predict-house-price")
         cls.valid_payload = {
             "longitude": -122.64,
             "latitude": 38.01,

@@ -5,8 +5,8 @@ from decouple import AutoConfig, Csv
 
 # Base Settings
 
-BASE_DIR = Path(__file__).resolve().parent.parent  # django project root dir
-ROOT_DIR = BASE_DIR.parent  # repo root dir
+BASE_DIR = Path(__file__).resolve().parent.parent.parent  # django project root
+ROOT_DIR = BASE_DIR.parent  # repo root
 
 config = AutoConfig(search_path=ROOT_DIR)  # looks for env in ROOT_DIR
 
@@ -161,8 +161,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ML
 
-MODEL_PATH = config("MODEL_PATH")
-FEATURES_PATH = config("FEATURES_PATH")
+MODEL_PATH = config("MODEL_PATH", default=BASE_DIR / "model" / "model.joblib")
+FEATURES_PATH = config("FEATURES_PATH", default=BASE_DIR / "model" / "features.json")
 
 
 # Logging

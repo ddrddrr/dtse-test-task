@@ -19,6 +19,6 @@ COPY uv.lock ./
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --group prod
 
-COPY musikk ./
+COPY house_prices ./
 
 ENTRYPOINT ["./entrypoint.sh"]

@@ -7,8 +7,13 @@ It loads a pre-trained model (`model.joblib`) and exposes a prediction endpoint 
 
 1. Clone the repo `git clone https://github.com/ddrddrr/dtse-test-task`
 2. Switch to the project dir `cd dtse-test-task`
-3. Create an `.env` file and set the variables according to the desired mode of running
-   (see `.env.example` and `.env.prod.example`)
+3. Set the env vars in your shell. See `.env.example` for dev settings and `.env.prod.example` for prod settings
+   For example:
+
+```sh
+DJANGO_SETTINGS_MODULE=house_prices.settings.base
+DEBUG=True
+```
 
 # Running with Docker
 
@@ -23,18 +28,6 @@ It loads a pre-trained model (`model.joblib`) and exposes a prediction endpoint 
 1. [Install uv](https://docs.astral.sh/uv/getting-started/installation/)
 2. Run `uv sync --locked` to install the dependencies.
    That will automatically create the `.venv` directory and download all needed packages.
-2. Highly recommended to [install direnv](https://direnv.net/#basic-installation)
-   in order to easily manage .env files. If installed, don't forget
-   to [hook your shell to it](https://direnv.net/docs/hook.html).
-   Then you will be able to just write `direnv allow` in the project directory to load the env vars from
-   the `.env` file.
-3. If not using `direnv`, export the variables manually in your shell, e.g.:
-
-```sh
-DJANGO_SETTINGS_MODULE=house_prices.settings.base
-DEBUG=True
-```
-
 4. In the directory where the `manage.py` script is located(`cd house_prices`) run
    `uv run manage.py migrate && uv run manage.py runserver`.
    This will initialize the database and start the development server.
@@ -48,6 +41,7 @@ Don't forget to set the port in the url for the development server.
 
 The Swagger docs are protected by Authentication. On the default page the unauthenticated
 users will see only two endpoints:
+
 - `/api/users/login/`
 - `/api/users/register/`
 
@@ -99,4 +93,14 @@ Try it out, either with the predefined value or your own.
 - Swagger docs are served by `Django`, which is not ideal, but sufficient for this project.
 - No proper protections are implemented(CORS, CSRF, etc.) as the domain of the API is not known.
 - The solution is not "Production-Ready" per se, as proxy is configured to work with HTTP only
-  (to enable local testing), the registration workflow does not have any verification of the user, etc. 
+  (to enable local testing), the registration workflow does not have any verification of the user, etc.
+
+# P.S.
+
+The env vars can be managed better like that:
+
+- [Install direnv](https://direnv.net/#basic-installation)
+- [Hook your shell to it](https://direnv.net/docs/hook.html).
+
+Then you will be able to just write `direnv allow` in the project directory to load the env vars from
+the `.env` file.

@@ -20,8 +20,10 @@ Caddyfile*
 
 src/**/tests/
 src/**/tests/**
+db.sqlite3
 
 __pycache__/
+
 # Misc
 LICENCE*
 README*

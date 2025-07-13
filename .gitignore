@@ -81,3 +81,4 @@ pip-selfcheck.json
 
 # Test Task
 housing_prices_dashboard
+db.sqlite3
